@@ -1,42 +1,31 @@
-import csv
+import pandas as pd
 
-def load_data_from_csv(file_path):
-    """
-    Verileri CSV dosyasından okur ve bir sözlük olarak döndürür.
+class Analysis():
+    # CSV dosyalarını okuyun
 
-    Args:
-        file_path (str): CSV dosyasının yolu.
+    def total_price(self, user_id):
+        with open('subscriptions.csv', 'r') as file:
+            subscriptions_data = file.readlines()
 
-    Returns:
-        dict: Verileri içeren bir sözlük.
-    """
-    data_dict = {}
-    with open(file_path, "r", newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            data_dict[row["Abonelik"]] = float(row["Aylık Ücret"])
-    return data_dict
+        price_df = pd.read_csv('price.csv', header=None, names=['subscription_name', 'price'])
 
-def toplam_gider_hesapla(abonelikler):
-    """
-    Verilen aboneliklerin toplam giderini hesaplar.
 
-    Args:
-        abonelikler (dict): Abonelik adları ve aylık ücretleri içeren bir sözlük.
+        # Kullanıcının aboneliklerini alın
+        user_subscriptions = []
+        for line in subscriptions_data:
+            if line.startswith(user_id):
+                parts = line.strip().split(',')
+                user_subscriptions = parts[1::2]  # Abonelik isimleri her iki elemandan birinde bulunuyor
+                break
 
-    Returns:
-        float: Toplam abonelik gideri.
-    """
-    toplam_gider = sum(abonelikler.values())
-    return toplam_gider
+        # Kullanıcının abonelik fiyatlarını toplayın
+        total_cost = 0
+        for subscription in user_subscriptions:
+            if subscription in price_df['subscription_name'].values:
+                price = price_df[price_df['subscription_name'] == subscription]['price'].values[0]
+                print(price)
+                total_cost += price
 
-# Örnek CSV dosyası yolu
-csv_file_path = "subscriptions.csv"
+        print(f"user toplam abonelik ücreti: ${total_cost:.2f}")
 
-# Verileri yükle
-abonelikler_dict = load_data_from_csv(csv_file_path)
 
-# Toplam abonelik giderini hesapla
-toplam_abonelik_gideri = toplam_gider_hesapla(abonelikler_dict)
-
-print(f"Toplam abonelik gideri: ${toplam_abonelik_gideri:.2f}")
