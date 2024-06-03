@@ -4,6 +4,7 @@ Handles user authentication and menu navigation.
 '''
 import csv
 import os
+from reminder import Reminder
 
 def load_users(filename='users.csv'):
     users = {}
@@ -79,6 +80,8 @@ def display_submenu():
             print("Payment selected.")
         elif choice == "3":
             print("Reminder selected.")
+            reminder = Reminder()
+            reminder.main()
         elif choice == "4":
             print("Expanse Analysis selected.")
         elif choice == "5":
