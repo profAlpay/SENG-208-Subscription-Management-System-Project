@@ -59,7 +59,3 @@ class Payment:
             print("Invalid CVV. It should be exactly 3 digits.")
             return False
         return True
-
-if __name__ == "__main__":
-    payment = Payment()
-    payment.enter_card_details()

@@ -1,2 +1,5 @@
-user1,Netflix,20,Paid,Youtube,22,Disney+,24,Spotify,10
+user1,Netflix,20
+user1,Youtube,22
+user1,Disney,24
+user1,Spotify,10
 user2,Netflix,19
